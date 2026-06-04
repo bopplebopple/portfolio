@@ -1,5 +1,6 @@
 "use client";
 
+import { AnimatePresence, motion } from "motion/react";
 import { useEffect, useState } from "react";
 import { navLinks, profile } from "@/lib/content";
 
@@ -15,7 +16,6 @@ export default function Nav() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Highlight the section currently in view.
   useEffect(() => {
     const ids = navLinks.map((l) => l.href.slice(1));
     const sections = ids
@@ -34,7 +34,6 @@ export default function Nav() {
     return () => observer.disconnect();
   }, []);
 
-  // Lock body scroll while the mobile menu is open.
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => {
@@ -43,10 +42,13 @@ export default function Nav() {
   }, [open]);
 
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
+    <motion.header
+      initial={{ y: -80, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+      className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
         scrolled || open
-          ? "border-b border-line bg-ink/80 backdrop-blur-xl"
+          ? "border-b border-line glass"
           : "border-b border-transparent"
       }`}
     >
@@ -56,7 +58,7 @@ export default function Nav() {
           className="group flex items-center gap-2 font-mono text-sm font-semibold tracking-tight"
           aria-label="Back to top"
         >
-          <span className="grid h-8 w-8 place-items-center rounded-lg border border-line bg-surface-2 text-accent transition-colors group-hover:border-accent/50">
+          <span className="grid h-8 w-8 place-items-center rounded-lg border border-line bg-surface-2 text-accent transition-all duration-300 group-hover:border-accent/50 group-hover:shadow-glow">
             MM
           </span>
           <span className="hidden text-fg sm:inline">Matthew Munandar</span>
@@ -64,15 +66,20 @@ export default function Nav() {
 
         <ul className="hidden items-center gap-1 md:flex">
           {navLinks.map((link) => (
-            <li key={link.href}>
+            <li key={link.href} className="relative">
               <a
                 href={link.href}
-                className={`rounded-full px-3.5 py-2 text-sm transition-colors ${
-                  active === link.href
-                    ? "text-fg"
-                    : "text-muted hover:text-fg"
+                className={`relative block rounded-full px-3.5 py-2 text-sm transition-colors ${
+                  active === link.href ? "text-fg" : "text-muted hover:text-fg"
                 }`}
               >
+                {active === link.href ? (
+                  <motion.span
+                    layoutId="nav-pill"
+                    className="absolute inset-0 -z-10 rounded-full border border-line bg-surface-2"
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                ) : null}
                 {link.label}
               </a>
             </li>
@@ -82,7 +89,7 @@ export default function Nav() {
         <div className="flex items-center gap-2">
           <a
             href={`mailto:${profile.email}`}
-            className="hidden rounded-full border border-line bg-surface-2 px-4 py-2 text-sm font-medium text-fg transition-colors hover:border-accent/50 hover:text-accent sm:inline-flex"
+            className="hidden rounded-full border border-line bg-surface-2 px-4 py-2 text-sm font-medium text-fg transition-all duration-300 hover:border-accent/50 hover:text-accent hover:shadow-glow sm:inline-flex"
           >
             Get in touch
           </a>
@@ -92,7 +99,7 @@ export default function Nav() {
             onClick={() => setOpen((v) => !v)}
             aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
-            className="grid h-10 w-10 place-items-center rounded-lg border border-line bg-surface-2 text-fg md:hidden"
+            className="tap-target grid h-10 w-10 place-items-center rounded-lg border border-line bg-surface-2 text-fg md:hidden"
           >
             <span className="relative block h-3.5 w-5">
               <span
@@ -115,35 +122,45 @@ export default function Nav() {
         </div>
       </nav>
 
-      {/* Mobile menu */}
-      <div
-        className={`overflow-hidden border-line transition-[max-height] duration-300 ease-out md:hidden ${
-          open ? "max-h-96 border-t" : "max-h-0"
-        }`}
-      >
-        <ul className="space-y-1 px-5 py-4">
-          {navLinks.map((link) => (
-            <li key={link.href}>
-              <a
-                href={link.href}
-                onClick={() => setOpen(false)}
-                className="block rounded-xl px-4 py-3 text-base text-muted transition-colors hover:bg-surface-2 hover:text-fg"
-              >
-                {link.label}
-              </a>
-            </li>
-          ))}
-          <li className="pt-2">
-            <a
-              href={`mailto:${profile.email}`}
-              onClick={() => setOpen(false)}
-              className="block rounded-xl bg-accent px-4 py-3 text-center text-base font-semibold text-ink"
-            >
-              Get in touch
-            </a>
-          </li>
-        </ul>
-      </div>
-    </header>
+      <AnimatePresence>
+        {open ? (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="overflow-hidden border-t border-line md:hidden"
+          >
+            <ul className="space-y-1 px-5 py-4">
+              {navLinks.map((link, i) => (
+                <motion.li
+                  key={link.href}
+                  initial={{ opacity: 0, x: -12 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 0.04 * i + 0.05 }}
+                >
+                  <a
+                    href={link.href}
+                    onClick={() => setOpen(false)}
+                    className="block rounded-xl px-4 py-3 text-base text-muted transition-colors hover:bg-surface-2 hover:text-fg"
+                  >
+                    {link.label}
+                  </a>
+                </motion.li>
+              ))}
+              <li className="pt-2">
+                <a
+                  href={`mailto:${profile.email}`}
+                  onClick={() => setOpen(false)}
+                  className="block rounded-xl bg-accent px-4 py-3 text-center text-base font-semibold text-ink"
+                >
+                  Get in touch
+                </a>
+              </li>
+            </ul>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
+    </motion.header>
   );
 }

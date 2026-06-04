@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { profile } from "@/lib/content";
+import Backdrop from "@/components/Backdrop";
+import MotionProvider from "@/components/MotionProvider";
 import "./globals.css";
 
 const inter = Inter({
@@ -65,9 +67,8 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${mono.variable}`}>
       <body>
-        <div className="ambient" aria-hidden />
-        <div className="grid-fade" aria-hidden />
-        {children}
+        <Backdrop />
+        <MotionProvider>{children}</MotionProvider>
       </body>
     </html>
   );

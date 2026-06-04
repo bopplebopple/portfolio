@@ -1,4 +1,4 @@
-import Reveal from "./Reveal";
+import { FadeIn } from "./Motion";
 
 type Props = {
   index: string;
@@ -14,18 +14,20 @@ export default function SectionHeading({
   description,
 }: Props) {
   return (
-    <Reveal className="mb-12 max-w-2xl sm:mb-16">
-      <div className="flex items-center gap-3 font-mono text-xs uppercase tracking-[0.2em] text-accent">
+    <FadeIn className="mb-12 max-w-2xl sm:mb-16">
+      <div className="flex items-center gap-3 eyebrow text-accent">
         <span>{index}</span>
-        <span className="h-px w-8 bg-accent/40" />
+        <span className="h-px w-10 bg-gradient-to-r from-accent to-transparent" />
         <span>{eyebrow}</span>
       </div>
-      <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">
+      <h2 className="display mt-4 text-[clamp(1.85rem,4.5vw,2.75rem)] font-semibold tracking-tight">
         {title}
       </h2>
       {description ? (
-        <p className="mt-4 text-base text-muted sm:text-lg">{description}</p>
+        <p className="mt-4 text-balance text-base text-muted sm:text-lg">
+          {description}
+        </p>
       ) : null}
-    </Reveal>
+    </FadeIn>
   );
 }

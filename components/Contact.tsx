@@ -1,5 +1,5 @@
 import { profile } from "@/lib/content";
-import Reveal from "./Reveal";
+import { FadeIn, ActionLink, Stagger, StaggerItem } from "./Motion";
 import { ArrowIcon, LinkedInIcon, MailIcon, PhoneIcon, PinIcon } from "./icons";
 
 const channels = [
@@ -33,77 +33,85 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="mx-auto max-w-6xl scroll-mt-20 px-5 py-20 sm:px-8 sm:py-28"
+      className="relative mx-auto max-w-6xl scroll-mt-20 px-5 py-24 sm:px-8 sm:py-32"
     >
-      <Reveal>
-        <div className="relative overflow-hidden rounded-3xl border border-line bg-surface/60 p-8 backdrop-blur sm:p-12 lg:p-16">
+      <FadeIn>
+        <div className="card-sheen relative overflow-hidden rounded-3xl hairline glass p-8 shadow-elev sm:p-12 lg:p-16">
           <div
-            className="pointer-events-none absolute -right-20 -top-24 h-64 w-64 rounded-full bg-accent/10 blur-3xl"
+            className="pointer-events-none absolute -right-24 -top-28 h-72 w-72 rounded-full bg-accent/15 blur-3xl"
+            aria-hidden
+          />
+          <div
+            className="pointer-events-none absolute -bottom-28 -left-24 h-72 w-72 rounded-full bg-accent-3/15 blur-3xl"
             aria-hidden
           />
           <div className="relative">
-            <div className="font-mono text-xs uppercase tracking-[0.2em] text-accent">
-              05 — Contact
-            </div>
-            <h2 className="mt-4 max-w-2xl text-3xl font-semibold tracking-tight sm:text-5xl">
+            <div className="eyebrow text-accent">05 — Contact</div>
+            <h2 className="display mt-4 max-w-2xl text-[clamp(2rem,5.5vw,3.25rem)] font-semibold tracking-tight">
               Let&apos;s build something{" "}
               <span className="gradient-text">reliable</span> together.
             </h2>
-            <p className="mt-5 max-w-xl text-base text-muted sm:text-lg">
+            <p className="mt-5 max-w-xl text-balance text-base text-muted sm:text-lg">
               Open to backend engineering roles and collaborations. The fastest
               way to reach me is by email — I usually reply within a day.
             </p>
 
-            <div className="mt-8 flex flex-wrap gap-3">
-              <a
+            <div className="mt-9 flex flex-wrap gap-3">
+              <ActionLink
                 href={`mailto:${profile.email}`}
-                className="group inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3.5 text-sm font-semibold text-ink transition-transform hover:-translate-y-0.5"
+                className="tap-target group inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3.5 text-sm font-semibold text-ink shadow-glow"
               >
                 Email me
-                <ArrowIcon className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-              </a>
-              <a
+                <ArrowIcon className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </ActionLink>
+              <ActionLink
                 href={profile.linkedin}
                 target="_blank"
                 rel="noreferrer noopener"
-                className="inline-flex items-center gap-2 rounded-full border border-line bg-surface-2/60 px-6 py-3.5 text-sm font-medium text-fg transition-colors hover:border-accent/50"
+                className="tap-target inline-flex items-center gap-2 rounded-full hairline glass px-6 py-3.5 text-sm font-medium text-fg transition-colors hover:text-accent"
               >
                 <LinkedInIcon className="h-4 w-4" />
                 Connect on LinkedIn
-              </a>
+              </ActionLink>
             </div>
 
-            <dl className="mt-12 grid gap-x-8 gap-y-6 border-t border-line pt-8 sm:grid-cols-2 lg:grid-cols-4">
+            <Stagger
+              className="mt-12 grid gap-x-8 gap-y-6 border-t border-line pt-8 sm:grid-cols-2 lg:grid-cols-4"
+              gap={0.06}
+            >
               {channels.map(({ label, value, href, Icon, external }) => {
-                const content = (
+                const inner = (
                   <>
                     <dt className="flex items-center gap-2 text-xs font-medium uppercase tracking-wider text-muted">
                       <Icon className="h-4 w-4 text-accent" />
                       {label}
                     </dt>
-                    <dd className="mt-2 break-words text-sm text-fg">{value}</dd>
+                    <dd className="mt-2 break-words text-sm text-fg transition-colors group-hover:text-accent">
+                      {value}
+                    </dd>
                   </>
                 );
-                return href ? (
-                  <a
-                    key={label}
-                    href={href}
-                    target={external ? "_blank" : undefined}
-                    rel={external ? "noreferrer noopener" : undefined}
-                    className="group rounded-xl transition-colors"
-                  >
-                    <div className="transition-colors group-hover:[&_dd]:text-accent">
-                      {content}
-                    </div>
-                  </a>
-                ) : (
-                  <div key={label}>{content}</div>
+                return (
+                  <StaggerItem key={label}>
+                    {href ? (
+                      <a
+                        href={href}
+                        target={external ? "_blank" : undefined}
+                        rel={external ? "noreferrer noopener" : undefined}
+                        className="group block"
+                      >
+                        {inner}
+                      </a>
+                    ) : (
+                      <div className="group">{inner}</div>
+                    )}
+                  </StaggerItem>
                 );
               })}
-            </dl>
+            </Stagger>
           </div>
         </div>
-      </Reveal>
+      </FadeIn>
     </section>
   );
 }

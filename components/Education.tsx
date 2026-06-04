@@ -1,19 +1,26 @@
 import { education } from "@/lib/content";
-import Reveal from "./Reveal";
+import { SpotlightCard, Stagger, StaggerItem } from "./Motion";
 import SectionHeading from "./SectionHeading";
 
 export default function Education() {
   return (
     <section
       id="education"
-      className="mx-auto max-w-6xl scroll-mt-20 px-5 py-20 sm:px-8 sm:py-28"
+      className="relative mx-auto max-w-6xl scroll-mt-20 px-5 py-24 sm:px-8 sm:py-32"
     >
-      <SectionHeading index="04" eyebrow="Education" title="Where I learned the craft." />
+      <SectionHeading
+        index="04"
+        eyebrow="Education"
+        title="Where I learned the craft."
+      />
 
-      <div className="grid gap-5 md:grid-cols-2">
-        {education.map((edu, i) => (
-          <Reveal key={edu.school} delay={i * 90}>
-            <article className="flex h-full flex-col rounded-2xl border border-line bg-surface/50 p-6 backdrop-blur transition-colors hover:border-accent/30 sm:p-7">
+      <Stagger className="grid gap-5 md:grid-cols-2" gap={0.1}>
+        {education.map((edu) => (
+          <StaggerItem key={edu.school} className="h-full">
+            <SpotlightCard
+              glow="var(--color-accent-3)"
+              className="card-sheen flex h-full flex-col rounded-2xl hairline glass p-6 sm:p-7"
+            >
               <div className="flex items-start justify-between gap-4">
                 <div>
                   <h3 className="text-xl font-semibold tracking-tight text-fg">
@@ -32,13 +39,11 @@ export default function Education() {
               <p className="mt-4 text-sm leading-relaxed text-muted">
                 {edu.detail}
               </p>
-              <p className="mt-5 font-mono text-xs text-muted/80">
-                {edu.period}
-              </p>
-            </article>
-          </Reveal>
+              <p className="mt-5 font-mono text-xs text-muted-2">{edu.period}</p>
+            </SpotlightCard>
+          </StaggerItem>
         ))}
-      </div>
+      </Stagger>
     </section>
   );
 }

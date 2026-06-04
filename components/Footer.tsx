@@ -1,10 +1,18 @@
 import { navLinks, profile } from "@/lib/content";
+import { FadeIn } from "./Motion";
 
 export default function Footer() {
   const year = new Date().getFullYear();
   return (
-    <footer className="border-t border-line">
-      <div className="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-10 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+    <footer className="relative border-t border-line">
+      <span
+        aria-hidden
+        className="absolute inset-x-0 -top-px mx-auto h-px max-w-6xl bg-gradient-to-r from-transparent via-accent/40 to-transparent"
+      />
+      <FadeIn
+        blur={false}
+        className="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-10 sm:flex-row sm:items-center sm:justify-between sm:px-8"
+      >
         <div>
           <p className="font-mono text-sm font-semibold text-fg">
             Matthew Munandar
@@ -26,10 +34,10 @@ export default function Footer() {
           ))}
         </nav>
 
-        <p className="text-xs text-muted/70">
+        <p className="text-xs text-muted-2">
           © {year} {profile.name}. Built with Next.js &amp; Tailwind.
         </p>
-      </div>
+      </FadeIn>
     </footer>
   );
 }
