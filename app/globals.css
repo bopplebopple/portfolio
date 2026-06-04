@@ -1,0 +1,145 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #05070a;
+  --color-surface: #0a0e14;
+  --color-surface-2: #0f1620;
+  --color-line: #1c2530;
+  --color-muted: #8a97a6;
+  --color-fg: #e8edf3;
+  --color-accent: #2dd4bf;
+  --color-accent-2: #38bdf8;
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, "SF Mono", monospace;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+* {
+  border-color: var(--color-line);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background-color: var(--color-ink);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+::selection {
+  background-color: color-mix(in srgb, var(--color-accent) 30%, transparent);
+  color: #fff;
+}
+
+/* Subtle ambient background glow used behind the page */
+.ambient {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(40rem 40rem at 80% -10%, color-mix(in srgb, var(--color-accent) 12%, transparent), transparent 70%),
+    radial-gradient(36rem 36rem at 10% 10%, color-mix(in srgb, var(--color-accent-2) 10%, transparent), transparent 70%);
+}
+
+.grid-fade {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.4;
+  background-image:
+    linear-gradient(to right, var(--color-line) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-line) 1px, transparent 1px);
+  background-size: 56px 56px;
+  mask-image: radial-gradient(60rem 50rem at 50% -10%, black, transparent 75%);
+  -webkit-mask-image: radial-gradient(60rem 50rem at 50% -10%, black, transparent 75%);
+}
+
+/* Reveal-on-scroll animation */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+.gradient-text {
+  background: linear-gradient(120deg, var(--color-accent), var(--color-accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Animated conic ring behind the hero portrait */
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.portrait-ring::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from 0deg,
+    var(--color-accent),
+    var(--color-accent-2),
+    transparent 55%,
+    var(--color-accent)
+  );
+  animation: spin-slow 9s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portrait-ring::before {
+    animation: none;
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+.float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .float { animation: none; }
+}
