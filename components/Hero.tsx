@@ -75,7 +75,7 @@ export default function Hero() {
         {/* Portrait */}
         <div className="order-1 flex justify-center lg:order-2 lg:justify-end">
           <div className="float relative">
-            <div className="portrait-ring relative h-60 w-60 overflow-hidden rounded-[2rem] sm:h-72 sm:w-72 lg:h-80 lg:w-80">
+            <div className="portrait-ring relative aspect-[4000/5376] w-64 overflow-hidden rounded-[2rem] sm:w-72 lg:w-80">
               <div className="absolute inset-[3px] overflow-hidden rounded-[calc(2rem-3px)] bg-surface-2">
                 <Image
                   src="/profile.jpg"

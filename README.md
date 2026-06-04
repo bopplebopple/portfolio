@@ -25,14 +25,14 @@ npm run build    # production build
 npm run start    # serve the production build
 ```
 
-## ⚠️ Add your photo
+## Your photo
 
-The hero uses `public/profile.jpg`. A generated gradient placeholder ships in its place.
-
-1. Save your portrait as **`public/profile.jpg`** (replace the placeholder).
-2. A square crop around **1000×1000** looks best in the rounded hero frame.
-3. If your photo comes out sideways, rotate it upright before saving
-   (e.g. `sips -r 90 public/profile.jpg` rotates 90° clockwise).
+The hero uses **`public/profile.jpg`** (~4000×5376, a 3:4 portrait).
+The hero frame's `aspect-[4000/5376]` matches the image so it shows with no
+cropping. To swap it, replace `public/profile.jpg` and update the
+`aspect-[...]` ratio in `components/Hero.tsx` to match your new image's
+width×height (or use `aspect-square` for a square crop). Keep the filename
+lowercase — Vercel's filesystem is case-sensitive.
 
 ## Editing content
 
@@ -50,7 +50,7 @@ app/
   icon.svg        # favicon (MM monogram)
 components/        # Nav, Hero, About, Experience, Skills, Education, Contact, Footer
 lib/content.ts    # all content
-public/profile.jpg # your portrait (replace the placeholder)
+public/profile.jpg # your portrait (3:4 aspect ratio)
 ```
 
 ## Deploy to Vercel
