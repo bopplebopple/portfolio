@@ -3,20 +3,14 @@
 import { useEffect } from "react";
 import Lenis from "lenis";
 
-/**
- * Lenis-powered inertial smooth scrolling + smooth anchor navigation.
- * Disabled entirely under prefers-reduced-motion (native scroll takes over).
- */
+/** Inertial smooth scrolling + smooth in-page anchors. Off under reduced motion. */
 export default function SmoothScroll({
   children,
 }: {
   children: React.ReactNode;
 }) {
   useEffect(() => {
-    const prefersReduced = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-    if (prefersReduced) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const lenis = new Lenis({
       duration: 1.1,
@@ -32,7 +26,6 @@ export default function SmoothScroll({
     };
     frame = requestAnimationFrame(raf);
 
-    // Smoothly scroll to in-page anchors
     const onClick = (e: MouseEvent) => {
       const anchor = (e.target as HTMLElement)?.closest?.(
         'a[href^="#"]'
@@ -43,11 +36,11 @@ export default function SmoothScroll({
       const target = document.querySelector(id);
       if (!target) return;
       e.preventDefault();
-      lenis.scrollTo(target as HTMLElement, { offset: 0, duration: 1.25 });
+      lenis.scrollTo(target as HTMLElement, { offset: -8, duration: 1.25 });
       window.history.pushState(null, "", id);
     };
-
     document.addEventListener("click", onClick);
+
     return () => {
       cancelAnimationFrame(frame);
       document.removeEventListener("click", onClick);

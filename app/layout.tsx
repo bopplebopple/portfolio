@@ -1,21 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import {
-  Bricolage_Grotesque,
-  Inter,
-  Instrument_Serif,
-  JetBrains_Mono,
-} from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import { profile } from "@/lib/content";
 import SmoothScroll from "@/components/ui/SmoothScroll";
-import ScrollProgress from "@/components/ui/ScrollProgress";
+import Background from "@/components/sections/Background";
 import "./globals.css";
-
-const bricolage = Bricolage_Grotesque({
-  subsets: ["latin"],
-  variable: "--font-bricolage",
-  display: "swap",
-  weight: ["400", "500", "600", "700", "800"],
-});
 
 const inter = Inter({
   subsets: ["latin"],
@@ -29,16 +17,8 @@ const jetbrains = JetBrains_Mono({
   display: "swap",
 });
 
-const instrument = Instrument_Serif({
-  subsets: ["latin"],
-  variable: "--font-instrument",
-  display: "swap",
-  weight: "400",
-  style: ["normal", "italic"],
-});
-
 const description =
-  "Matthew Brian Khoe Munandar — Back-End Engineer based in Jakarta. 3+ years building reliable, high-performance backend systems in Go with PostgreSQL, clean architecture, and scalable APIs.";
+  "Matthew Munandar — Back-End Engineer in Jakarta. Three years building production services in Go at Pharos Indonesia, working across PostgreSQL, clean architecture, and APIs.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://matthew-munandar.vercel.app"),
@@ -51,7 +31,6 @@ export const metadata: Metadata = {
     "Matthew Munandar",
     "Back-End Engineer",
     "Golang Developer",
-    "Go Engineer",
     "Backend Developer Jakarta",
     "PostgreSQL",
     "Software Engineer",
@@ -74,7 +53,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f1ede4",
+  themeColor: "#0a0a0b",
   width: "device-width",
   initialScale: 1,
 };
@@ -85,17 +64,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html
-      lang="en"
-      className={`${bricolage.variable} ${inter.variable} ${jetbrains.variable} ${instrument.variable}`}
-    >
+    <html lang="en" className={`${inter.variable} ${jetbrains.variable}`}>
       <body className="antialiased">
-        <SmoothScroll>
-          <ScrollProgress />
-          <div className="editorial-grid" aria-hidden />
-          {children}
-          <div className="grain" aria-hidden />
-        </SmoothScroll>
+        <Background />
+        <SmoothScroll>{children}</SmoothScroll>
+        <div className="grain" aria-hidden />
       </body>
     </html>
   );

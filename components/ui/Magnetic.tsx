@@ -3,14 +3,11 @@
 import { motion, useMotionValue, useReducedMotion, useSpring } from "motion/react";
 import { useRef } from "react";
 
-/**
- * Subtle magnetic pull — the element drifts a fraction toward the cursor
- * while hovered, then springs back. Activates only on direct hover.
- */
+/** Subtle magnetic pull toward the cursor while hovered; springs back. */
 export default function Magnetic({
   children,
   className,
-  strength = 0.32,
+  strength = 0.3,
 }: {
   children: React.ReactNode;
   className?: string;
@@ -20,18 +17,15 @@ export default function Magnetic({
   const ref = useRef<HTMLSpanElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  const sx = useSpring(x, { stiffness: 220, damping: 16, mass: 0.3 });
-  const sy = useSpring(y, { stiffness: 220, damping: 16, mass: 0.3 });
+  const sx = useSpring(x, { stiffness: 230, damping: 17, mass: 0.3 });
+  const sy = useSpring(y, { stiffness: 230, damping: 17, mass: 0.3 });
 
-  const handleMove = (e: React.MouseEvent<HTMLSpanElement>) => {
+  const onMove = (e: React.MouseEvent<HTMLSpanElement>) => {
     if (reduce || !ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    const relX = e.clientX - (rect.left + rect.width / 2);
-    const relY = e.clientY - (rect.top + rect.height / 2);
-    x.set(relX * strength);
-    y.set(relY * strength);
+    const r = ref.current.getBoundingClientRect();
+    x.set((e.clientX - (r.left + r.width / 2)) * strength);
+    y.set((e.clientY - (r.top + r.height / 2)) * strength);
   };
-
   const reset = () => {
     x.set(0);
     y.set(0);
@@ -40,7 +34,7 @@ export default function Magnetic({
   return (
     <motion.span
       ref={ref}
-      onMouseMove={handleMove}
+      onMouseMove={onMove}
       onMouseLeave={reset}
       style={{ x: sx, y: sy }}
       className={`inline-flex ${className ?? ""}`}

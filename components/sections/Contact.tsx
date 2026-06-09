@@ -1,9 +1,9 @@
 import { ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
 import { profile } from "@/lib/content";
-import Reveal from "@/components/ui/Reveal";
+import { Reveal } from "@/components/ui/Reveal";
 import Magnetic from "@/components/ui/Magnetic";
 
-// lucide-react dropped brand glyphs, so the LinkedIn mark is inlined.
+// lucide-react dropped brand glyphs — inline the LinkedIn mark.
 function Linkedin({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
@@ -13,18 +13,8 @@ function Linkedin({ className }: { className?: string }) {
 }
 
 const channels = [
-  {
-    label: "Email",
-    value: profile.email,
-    href: `mailto:${profile.email}`,
-    Icon: Mail,
-  },
-  {
-    label: "Phone",
-    value: profile.phone,
-    href: `tel:${profile.phoneHref}`,
-    Icon: Phone,
-  },
+  { label: "Email", value: profile.email, href: `mailto:${profile.email}`, Icon: Mail },
+  { label: "Phone", value: profile.phone, href: `tel:${profile.phoneHref}`, Icon: Phone },
   {
     label: "LinkedIn",
     value: profile.linkedinLabel,
@@ -32,87 +22,80 @@ const channels = [
     Icon: Linkedin,
     external: true,
   },
-  {
-    label: "Location",
-    value: profile.location,
-    Icon: MapPin,
-  },
+  { label: "Location", value: profile.location, Icon: MapPin },
 ];
 
 export default function Contact() {
   return (
     <section
       id="contact"
-      className="relative scroll-mt-24 bg-ink text-paper"
+      className="relative mx-auto w-full max-w-6xl scroll-mt-24 px-5 py-28 sm:px-8 sm:py-36"
     >
-      <div className="mx-auto w-full max-w-[84rem] px-6 py-24 sm:px-10 sm:py-32 lg:px-16">
-        <Reveal className="flex items-center gap-4">
-          <span className="eyebrow text-accent">06</span>
-          <span className="h-px max-w-[8rem] flex-1 bg-white/20" />
-          <span className="eyebrow text-paper/60">Contact</span>
-        </Reveal>
+      <Reveal className="flex items-center gap-3" blur={false}>
+        <span className="eyebrow">Contact</span>
+        <span className="h-px flex-1 bg-line" />
+      </Reveal>
 
-        <Reveal>
-          <h2 className="display mt-8 max-w-4xl text-[clamp(2.5rem,8vw,6rem)] font-bold">
-            Let&apos;s build something{" "}
-            <span className="serif text-accent">reliable</span> together.
-          </h2>
-        </Reveal>
-
-        <Reveal>
-          <p className="mt-8 max-w-xl text-balance text-lg leading-relaxed text-paper/70">
-            Open to backend engineering roles and collaborations. The fastest
-            way to reach me is email — I usually reply within a day.
-          </p>
-        </Reveal>
-
-        <Reveal className="mt-10">
-          <Magnetic strength={0.25}>
-            <a
-              href={`mailto:${profile.email}`}
-              className="group inline-flex items-center gap-3 bg-paper px-7 py-4 text-sm font-semibold uppercase tracking-wider text-ink transition-colors duration-300 hover:bg-accent hover:text-on-accent"
-            >
-              Start a conversation
-              <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </a>
-          </Magnetic>
-        </Reveal>
-
-        {/* Channels */}
-        <dl className="mt-16 grid gap-px overflow-hidden border border-white/10 bg-white/10 sm:grid-cols-2 lg:grid-cols-4">
-          {channels.map(({ label, value, href, Icon, external }) => {
-            const inner = (
-              <>
-                <dt className="flex items-center gap-2 eyebrow text-paper/50">
-                  <Icon className="h-4 w-4 text-accent" />
-                  {label}
-                </dt>
-                <dd className="mt-3 break-words text-sm font-medium text-paper transition-colors duration-300 group-hover:text-accent">
-                  {value}
-                </dd>
-              </>
-            );
-            return (
-              <Reveal
-                key={label}
-                className="group bg-ink p-6 transition-colors duration-300 hover:bg-[#1c1a13]"
+      <div className="mt-12 grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div className="lg:col-span-7">
+          <Reveal>
+            <h2 className="display text-[clamp(2rem,5.5vw,3.75rem)] font-semibold">
+              Open to backend roles.
+              <br />
+              Let&apos;s talk.
+            </h2>
+            <p className="mt-6 max-w-md text-base leading-relaxed text-muted">
+              The fastest way to reach me is email — I usually reply within a
+              day.
+            </p>
+            <Magnetic strength={0.25}>
+              <a
+                href={`mailto:${profile.email}`}
+                className="group mt-9 inline-flex items-center gap-2 rounded-full bg-text px-6 py-3 text-sm font-semibold text-bg transition-opacity duration-300 hover:opacity-90"
               >
-                {href ? (
-                  <a
-                    href={href}
-                    target={external ? "_blank" : undefined}
-                    rel={external ? "noreferrer noopener" : undefined}
-                    className="block"
-                  >
-                    {inner}
-                  </a>
-                ) : (
-                  <div>{inner}</div>
-                )}
-              </Reveal>
-            );
-          })}
-        </dl>
+                Email me
+                <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </a>
+            </Magnetic>
+          </Reveal>
+        </div>
+
+        <div className="lg:col-span-5">
+          <Reveal className="card rounded-2xl p-2">
+            <ul className="divide-y divide-line">
+              {channels.map(({ label, value, href, Icon, external }) => {
+                const body = (
+                  <>
+                    <Icon className="h-4 w-4 shrink-0 text-faint transition-colors group-hover:text-text" />
+                    <span className="flex min-w-0 flex-col">
+                      <span className="eyebrow">{label}</span>
+                      <span className="truncate text-sm text-text">{value}</span>
+                    </span>
+                    {href && (
+                      <ArrowUpRight className="ml-auto h-4 w-4 shrink-0 text-faint opacity-0 transition-opacity group-hover:opacity-100" />
+                    )}
+                  </>
+                );
+                return (
+                  <li key={label}>
+                    {href ? (
+                      <a
+                        href={href}
+                        target={external ? "_blank" : undefined}
+                        rel={external ? "noreferrer noopener" : undefined}
+                        className="group flex items-center gap-4 rounded-xl p-4 transition-colors hover:bg-elev-2"
+                      >
+                        {body}
+                      </a>
+                    ) : (
+                      <div className="flex items-center gap-4 p-4">{body}</div>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </Reveal>
+        </div>
       </div>
     </section>
   );
