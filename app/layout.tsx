@@ -1,9 +1,21 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import {
+  Bricolage_Grotesque,
+  Inter,
+  Instrument_Serif,
+  JetBrains_Mono,
+} from "next/font/google";
 import { profile } from "@/lib/content";
-import Backdrop from "@/components/Backdrop";
-import MotionProvider from "@/components/MotionProvider";
+import SmoothScroll from "@/components/ui/SmoothScroll";
+import ScrollProgress from "@/components/ui/ScrollProgress";
 import "./globals.css";
+
+const bricolage = Bricolage_Grotesque({
+  subsets: ["latin"],
+  variable: "--font-bricolage",
+  display: "swap",
+  weight: ["400", "500", "600", "700", "800"],
+});
 
 const inter = Inter({
   subsets: ["latin"],
@@ -11,10 +23,18 @@ const inter = Inter({
   display: "swap",
 });
 
-const mono = JetBrains_Mono({
+const jetbrains = JetBrains_Mono({
   subsets: ["latin"],
-  variable: "--font-mono",
+  variable: "--font-jetbrains",
   display: "swap",
+});
+
+const instrument = Instrument_Serif({
+  subsets: ["latin"],
+  variable: "--font-instrument",
+  display: "swap",
+  weight: "400",
+  style: ["normal", "italic"],
 });
 
 const description =
@@ -54,7 +74,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#05070a",
+  themeColor: "#f1ede4",
   width: "device-width",
   initialScale: 1,
 };
@@ -65,10 +85,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${mono.variable}`}>
-      <body>
-        <Backdrop />
-        <MotionProvider>{children}</MotionProvider>
+    <html
+      lang="en"
+      className={`${bricolage.variable} ${inter.variable} ${jetbrains.variable} ${instrument.variable}`}
+    >
+      <body className="antialiased">
+        <SmoothScroll>
+          <ScrollProgress />
+          <div className="editorial-grid" aria-hidden />
+          {children}
+          <div className="grain" aria-hidden />
+        </SmoothScroll>
       </body>
     </html>
   );

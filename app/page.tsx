@@ -1,11 +1,13 @@
-import About from "@/components/About";
-import Contact from "@/components/Contact";
-import Education from "@/components/Education";
-import Experience from "@/components/Experience";
-import Footer from "@/components/Footer";
-import Hero from "@/components/Hero";
-import Nav from "@/components/Nav";
-import Skills from "@/components/Skills";
+import Nav from "@/components/sections/Nav";
+import Hero from "@/components/sections/Hero";
+import MarqueeStrip from "@/components/sections/MarqueeStrip";
+import About from "@/components/sections/About";
+import Work from "@/components/sections/Work";
+import Experience from "@/components/sections/Experience";
+import Skills from "@/components/sections/Skills";
+import Education from "@/components/sections/Education";
+import Contact from "@/components/sections/Contact";
+import Footer from "@/components/sections/Footer";
 import { profile } from "@/lib/content";
 
 const personJsonLd = {
@@ -32,16 +34,18 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
       />
-      <Nav />
       <a
         href="#about"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-accent focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-ink"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[80] focus:bg-accent focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-on-accent"
       >
         Skip to content
       </a>
-      <main>
+      <Nav />
+      <main className="relative z-10">
         <Hero />
+        <MarqueeStrip />
         <About />
+        <Work />
         <Experience />
         <Skills />
         <Education />

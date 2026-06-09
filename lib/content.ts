@@ -1,18 +1,25 @@
 // Single source of truth for all portfolio content.
-// Derived directly from Matthew Brian Khoe Munandar's résumé.
+// Derived directly from Matthew Brian Khoe Munandar's résumé — no invented data.
 
 export const profile = {
   name: "Matthew Brian Khoe Munandar",
   shortName: "Matthew Munandar",
+  firstName: "Matthew",
+  lastName: "Munandar",
+  monogram: "MM",
   title: "Back-End Engineer",
   location: "Jakarta, Indonesia",
+  available: true,
   email: "matthewmunandar18@gmail.com",
   phone: "+62 812 8980 2926",
   phoneHref: "+6281289802926",
   linkedin: "https://linkedin.com/in/matthew-munandar-5b51b1209",
   linkedinLabel: "matthew-munandar",
-  tagline:
-    "I build reliable, high-performance backend systems in Go.",
+  currentCompany: "Pharos Indonesia",
+  tagline: "I build reliable, high-performance backend systems in Go.",
+  // A short editorial statement used in the About section. Grounded in résumé.
+  statement:
+    "Computer Science graduate from BINUS University with 3+ years building production backends. I care about scalable architecture, efficient APIs, and systems that stay reliable under load.",
   intro:
     "Computer Science graduate from BINUS University with 3+ years of experience in backend development. I specialize in building reliable, high-performance backend systems using Golang — passionate about scalable architecture, efficient APIs, and contributing to innovative engineering teams.",
 } as const;
@@ -21,6 +28,19 @@ export const stats = [
   { value: "3+", label: "Years building backends" },
   { value: "Go", label: "Primary language" },
   { value: "3.61", label: "GPA / 4.00" },
+] as const;
+
+// Words used for the kinetic infinite marquee strip.
+export const marqueeWords = [
+  "Golang",
+  "PostgreSQL",
+  "REST APIs",
+  "Microservices",
+  "Clean Architecture",
+  "Docker",
+  "AWS",
+  "Concurrency",
+  "High-Volume Data",
 ] as const;
 
 export type Experience = {
@@ -62,6 +82,51 @@ export const experience: Experience[] = [
       "Assisted with hardware testing and documentation tasks.",
       "Supported engineers in project maintenance and basic system setup.",
     ],
+  },
+];
+
+export type Project = {
+  index: string;
+  title: string;
+  summary: string;
+  tags: string[];
+  context: string;
+};
+
+// "Selected Work" — engineering themes reframed strictly from the résumé's
+// production experience at Pharos Indonesia. No invented projects or metrics.
+export const projects: Project[] = [
+  {
+    index: "01",
+    title: "Service Migration to Go",
+    summary:
+      "Helped transition API services from Node.js to Golang, improving response efficiency across core backend modules now running in production.",
+    tags: ["Golang", "Node.js", "APIs"],
+    context: "Pharos Indonesia",
+  },
+  {
+    index: "02",
+    title: "High-Volume Data Layer",
+    summary:
+      "Designed and optimized PostgreSQL queries and transactions built to stay reliable under high-volume data operations.",
+    tags: ["PostgreSQL", "sqlx", "Transactions"],
+    context: "Pharos Indonesia",
+  },
+  {
+    index: "03",
+    title: "Clean Architecture Foundation",
+    summary:
+      "Implemented clean architecture and repository patterns with sqlx — keeping services modular, testable, and maintainable as they grew.",
+    tags: ["Clean Architecture", "Repository Pattern", "Go"],
+    context: "Pharos Indonesia",
+  },
+  {
+    index: "04",
+    title: "Scalable API Platform",
+    summary:
+      "Built scalable, well-documented APIs in close collaboration with frontend teams, keeping integration fast and predictable.",
+    tags: ["REST", "Microservices", "Documentation"],
+    context: "Pharos Indonesia",
   },
 ];
 
@@ -127,9 +192,9 @@ export const education: Education[] = [
 ];
 
 export const navLinks = [
-  { href: "#about", label: "About" },
-  { href: "#experience", label: "Experience" },
-  { href: "#skills", label: "Skills" },
-  { href: "#education", label: "Education" },
-  { href: "#contact", label: "Contact" },
+  { href: "#about", label: "About", index: "01" },
+  { href: "#work", label: "Work", index: "02" },
+  { href: "#experience", label: "Experience", index: "03" },
+  { href: "#skills", label: "Skills", index: "04" },
+  { href: "#contact", label: "Contact", index: "05" },
 ] as const;

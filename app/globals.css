@@ -1,237 +1,260 @@
 @import "tailwindcss";
 
+/* ============================================================= *
+ *  KINETIC EDITORIAL — design tokens
+ *  Warm paper · near-black ink · single vermilion accent
+ * ============================================================= */
 @theme {
-  --color-ink: #050608;
-  --color-surface: #0a0e14;
-  --color-surface-2: #0f1620;
-  --color-line: #1b2430;
-  --color-line-2: #232f3d;
-  --color-muted: #93a1b1;
-  --color-muted-2: #6b7888;
-  --color-fg: #eef2f7;
-  --color-accent: #2dd4bf;
-  --color-accent-2: #38bdf8;
-  --color-accent-3: #818cf8;
+  /* Surfaces */
+  --color-paper: #f1ede4;
+  --color-paper-2: #e8e2d6;
+  --color-card: #faf8f3;
+  --color-ink: #15130d;
+  --color-ink-soft: #38352c;
+  --color-muted: #6c685c;
+  --color-faint: #9b968a;
 
+  /* Accent — vermilion */
+  --color-accent: #e8431f;
+  --color-accent-deep: #c4351a;
+  --color-on-accent: #faf8f3;
+
+  /* Lines */
+  --color-line: rgba(21, 19, 13, 0.14);
+  --color-line-2: rgba(21, 19, 13, 0.08);
+  --color-line-strong: rgba(21, 19, 13, 0.9);
+
+  /* Type */
+  --font-display: var(--font-bricolage), "Arial Narrow", sans-serif;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: var(--font-mono), ui-monospace, "SF Mono", monospace;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+  --font-serif: var(--font-instrument), ui-serif, Georgia, serif;
 
-  --shadow-glow: 0 0 0 1px color-mix(in srgb, var(--color-accent) 22%, transparent),
-    0 12px 40px -12px color-mix(in srgb, var(--color-accent) 35%, transparent);
-  --shadow-elev: 0 1px 0 0 color-mix(in srgb, white 6%, transparent) inset,
-    0 24px 60px -24px rgba(0, 0, 0, 0.7);
+  /* Motion */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-:root {
-  color-scheme: dark;
-}
-
+/* ============================================================= *
+ *  Base
+ * ============================================================= */
 * {
   border-color: var(--color-line);
 }
 
 html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 5rem;
   -webkit-text-size-adjust: 100%;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
+  scroll-behavior: smooth;
 }
 
 body {
-  background-color: var(--color-ink);
-  color: var(--color-fg);
+  background-color: var(--color-paper);
+  color: var(--color-ink);
   font-family: var(--font-sans);
-  font-feature-settings: "cv02", "cv03", "cv04", "ss01";
-  letter-spacing: -0.011em;
+  font-feature-settings: "ss01", "cv01", "cv11";
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
 }
 
 ::selection {
-  background-color: color-mix(in srgb, var(--color-accent) 30%, transparent);
-  color: #fff;
+  background: var(--color-accent);
+  color: var(--color-on-accent);
 }
 
-/* ---------- Typography helpers ---------- */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
+/* When Lenis drives the scroll, let it own smoothing */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* ============================================================= *
+ *  Typography helpers
+ * ============================================================= */
 .display {
-  letter-spacing: -0.03em;
+  font-family: var(--font-display);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 0.92;
   text-wrap: balance;
-  line-height: 1.02;
+}
+
+.serif {
+  font-family: var(--font-serif);
+  font-style: italic;
+  letter-spacing: -0.01em;
 }
 
 .eyebrow {
   font-family: var(--font-mono);
   font-size: 0.72rem;
+  font-weight: 500;
   letter-spacing: 0.22em;
   text-transform: uppercase;
 }
 
-.gradient-text {
-  background: linear-gradient(
-    100deg,
-    var(--color-accent),
-    var(--color-accent-2) 55%,
-    var(--color-accent-3)
-  );
-  background-size: 200% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: hue-pan 8s ease-in-out infinite alternate;
+.mono {
+  font-family: var(--font-mono);
 }
 
-@keyframes hue-pan {
-  to {
-    background-position: 100% 0;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .gradient-text {
-    animation: none;
-  }
-}
-
-/* ---------- Surfaces / depth ---------- */
-.glass {
-  background: color-mix(in srgb, var(--color-surface) 62%, transparent);
-  backdrop-filter: blur(18px) saturate(135%);
-  -webkit-backdrop-filter: blur(18px) saturate(135%);
-}
-
+/* ============================================================= *
+ *  Structural utilities
+ * ============================================================= */
 .hairline {
-  border: 1px solid color-mix(in srgb, var(--color-line-2) 80%, transparent);
+  border: 1px solid var(--color-line);
 }
 
-.card-sheen {
+.rule {
+  height: 1px;
+  width: 100%;
+  background: var(--color-line);
+}
+
+/* animated underline link */
+.link-line {
   position: relative;
 }
-.card-sheen::after {
+.link-line::after {
   content: "";
   position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1px;
-  background: linear-gradient(
-    140deg,
-    color-mix(in srgb, white 10%, transparent),
-    transparent 40%
-  );
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
+  left: 0;
+  bottom: -2px;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.45s var(--ease-out-expo);
+}
+.link-line:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
 }
 
-/* ---------- Background field ---------- */
+/* brutalist hard-offset shadow used on raised cards */
+.shadow-hard {
+  box-shadow: 4px 4px 0 0 var(--color-ink);
+}
+.shadow-soft {
+  box-shadow: 0 24px 60px -28px rgba(21, 19, 13, 0.35);
+}
+
+/* ============================================================= *
+ *  Grain overlay (fixed, full-screen)
+ * ============================================================= */
 .grain {
   position: fixed;
   inset: 0;
-  z-index: 2;
+  z-index: 60;
   pointer-events: none;
-  opacity: 0.05;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.5;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 220 220' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+  background-size: 200px 200px;
 }
 
-.grid-fade {
+/* faint vertical guide grid for editorial structure */
+.editorial-grid {
   position: fixed;
   inset: 0;
-  z-index: -1;
+  z-index: 0;
   pointer-events: none;
-  opacity: 0.5;
-  background-image:
-    linear-gradient(to right, var(--color-line) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--color-line) 1px, transparent 1px);
-  background-size: 64px 64px;
-  mask-image: radial-gradient(60rem 46rem at 50% -8%, black, transparent 72%);
-  -webkit-mask-image: radial-gradient(60rem 46rem at 50% -8%, black, transparent 72%);
-}
-
-/* Drifting gradient orbs (GPU transforms only) */
-.orb {
-  position: fixed;
-  z-index: -1;
-  border-radius: 9999px;
-  filter: blur(80px);
-  pointer-events: none;
-  opacity: 0.5;
-  will-change: transform;
-}
-.orb-a {
-  width: 38rem;
-  height: 38rem;
-  top: -12rem;
-  right: -8rem;
-  background: radial-gradient(circle, color-mix(in srgb, var(--color-accent) 40%, transparent), transparent 65%);
-  animation: drift-a 22s ease-in-out infinite alternate;
-}
-.orb-b {
-  width: 32rem;
-  height: 32rem;
-  top: 30%;
-  left: -12rem;
-  background: radial-gradient(circle, color-mix(in srgb, var(--color-accent-3) 38%, transparent), transparent 65%);
-  animation: drift-b 26s ease-in-out infinite alternate;
-}
-.orb-c {
-  width: 28rem;
-  height: 28rem;
-  bottom: -8rem;
-  right: 10%;
-  background: radial-gradient(circle, color-mix(in srgb, var(--color-accent-2) 34%, transparent), transparent 65%);
-  animation: drift-c 30s ease-in-out infinite alternate;
-}
-
-@keyframes drift-a {
-  to { transform: translate3d(-4rem, 4rem, 0) scale(1.1); }
-}
-@keyframes drift-b {
-  to { transform: translate3d(5rem, -3rem, 0) scale(1.08); }
-}
-@keyframes drift-c {
-  to { transform: translate3d(-3rem, -4rem, 0) scale(1.12); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .orb { animation: none; }
-}
-
-/* ---------- Portrait ring ---------- */
-@keyframes spin-slow {
-  to { transform: rotate(360deg); }
-}
-.portrait-ring::before {
-  content: "";
-  position: absolute;
-  inset: -1.5px;
-  border-radius: inherit;
-  background: conic-gradient(
-    from 0deg,
-    var(--color-accent),
-    var(--color-accent-2),
-    var(--color-accent-3),
-    transparent 58%,
-    var(--color-accent)
+  background-image: linear-gradient(
+    to right,
+    var(--color-line-2) 1px,
+    transparent 1px
   );
-  animation: spin-slow 8s linear infinite;
+  background-size: calc(100% / 6) 100%;
+  mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    #000 18%,
+    #000 82%,
+    transparent
+  );
+  opacity: 0.7;
 }
+
+/* ============================================================= *
+ *  Kinetic marquee
+ * ============================================================= */
+.marquee {
+  display: flex;
+  width: max-content;
+  flex-wrap: nowrap;
+  will-change: transform;
+  animation: marquee var(--marquee-duration, 38s) linear infinite;
+}
+.marquee-reverse {
+  animation-direction: reverse;
+}
+.marquee-group:hover .marquee {
+  animation-play-state: paused;
+}
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* slow rotation for the availability seal */
+.spin-slow {
+  animation: spin 22s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* outlined display type (kinetic editorial) */
+.text-outline {
+  -webkit-text-stroke: 1.6px var(--color-ink);
+  color: transparent;
+}
+
+/* portrait duotone treatment */
+.portrait-frame {
+  filter: grayscale(1) contrast(1.04);
+  transition: filter 0.7s var(--ease-out-expo);
+}
+.portrait-card:hover .portrait-frame {
+  filter: grayscale(0) contrast(1);
+}
+.portrait-tint {
+  transition: opacity 0.7s var(--ease-out-expo);
+}
+.portrait-card:hover .portrait-tint {
+  opacity: 0;
+}
+
+/* ============================================================= *
+ *  Reduced motion
+ * ============================================================= */
 @media (prefers-reduced-motion: reduce) {
-  .portrait-ring::before { animation: none; }
-}
-
-/* ---------- Misc ---------- */
-.tap-target {
-  -webkit-tap-highlight-color: transparent;
-}
-
-@media (hover: none) {
-  /* Disable hover-only spotlight glows on touch to avoid sticky states */
-  .hover-only { display: none; }
+  html {
+    scroll-behavior: auto;
+  }
+  .marquee,
+  .spin-slow {
+    animation: none !important;
+  }
+  * {
+    scroll-behavior: auto !important;
+  }
 }
